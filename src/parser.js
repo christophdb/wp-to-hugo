@@ -98,6 +98,7 @@ function buildPost(data) {
 		isDraft: data.childValue('status') === 'draft',
 		slug: decodeURIComponent(data.childValue('post_name')),
 		date: getPostDate(data),
+		lastmod: getPostModifiedDate(data.childValue('post_modified')),
 		coverImageId: getPostMetaValue(data, '_thumbnail_id'),
 
 		// these are possibly set later in mergeImagesIntoPosts()
@@ -109,6 +110,11 @@ function buildPost(data) {
 function getPostDate(data) {
 	const date = luxon.DateTime.fromRFC2822(data.childValue('pubDate'), { zone: shared.config.timezone });
 	return date.isValid ? date : undefined;
+}
+
+function getPostModifiedDate(data) {
+	const modifiedDate = data.split(' ')[0];
+	return modifiedDate;
 }
 
 function getPostMetaValue(data, key) {

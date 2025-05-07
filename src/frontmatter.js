@@ -22,6 +22,10 @@ export function date(post) {
 	return post.date;
 }
 
+export function lastmod(post) {
+	return post.lastmod;
+}
+
 export function draft(post) {
 	// boolean representing the previously parsed draft status, only included when true
 	return post.isDraft ? true : undefined;
