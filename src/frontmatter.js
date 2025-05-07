@@ -8,7 +8,7 @@ export function categories(post) {
 	// array of decoded category names, excluding 'uncategorized'
 	const categories = post.data.children('category');
 	return categories
-		.filter((category) => category.attribute('domain') === 'category' && category.attribute('nicename') !== 'uncategorized')
+		.filter((category) => category.attribute('domain') === 'doc_category' && category.attribute('nicename') !== 'uncategorized')
 		.map((category) => decodeURIComponent(category.attribute('nicename')));
 }
 

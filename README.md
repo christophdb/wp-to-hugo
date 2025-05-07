@@ -4,6 +4,12 @@ Converts a WordPress export XML file into Markdown files. This makes it easy to 
 
 ![wordpress-export-to-markdown running in a terminal](https://github.com/user-attachments/assets/7ac1aa07-b6ee-46f4-ab49-291c1c45f350)
 
+## CDB custom notes
+
+- simply start with node app
+
+---
+
 ## Features
 
 - Saves each post as a separate Markdown file with frontmatter.

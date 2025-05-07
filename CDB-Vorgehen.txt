@@ -1,0 +1,91 @@
+
+
+TODOS:
+- schreiben ins richtige verzeichnis
+
+
+
+Was muss noch speziell getan werden:
+
+
+frontmatter ergänzen:
+- url
+
+Grafiken:
+- png in jpg
+- richtige img größe
+- https://seatable.io/wp-content/uploads/2022/10 weg...
+- maximale bildergröße: 768px
+
+andere sprachen runterladen:
+  sed -i 's|<link>https://seatable.io/docs/|<link>https://seatable.io/en/docs/|g' export-en.xml
+  "rename-index-to-lang.sh"
+artikel alle mergen mit "merge.sh"
+resize-images.sh drüberlaufen lassen
+
+
+
+Probleme, die ich noch lösen muss:
+- last modification date in frontmatter => kriege ich wahrscheinlich aus wordpress und speicher ich als separaten wert in frontmatter "lastmod" => DONE
+- in welcher kategorie von betterdocs liegen die => abspeichern in docs categorie folder => DONE
+- weight für die reihenfolge (brauche ich das?) => kriege ich das aus wordpress? => GEHT NICHT
+- besondere Formatierungen: Tabellen, Hinweise, Warnungen müssen wieder ergänzt werden  => 
+- Alle "images" Pfade dann mit suchen und ersetzen in VSCode bereinigen
+
+#######
+
+eigener proxy: biespiel ins handbuch.
+
+#################
+
+Mein Vorgehen
+
+Export sämtlicher DOCS als xml.
+Individuelle Sprachdateien anlegen export_de.xml, export_en.xml mit sed:
+  sed -i 's|<link>https://seatable.io/docs/|<link>https://seatable.io/en/docs/|g' export-en.xml
+
+Einmal erste Sprache (DEUTSCH) mit allen Bildern runterladen...
+dann andere sprachen. (kommt automatisch an die richtige stelle)
+resize-images.sh drüberlaufen lassen
+
+Einschränkungen:
+[ ] author muss ggf. noch korrigiert werden
+[ ] tables werden nicht übernommen
+[ ] FAQs müssen noch manuell korrigiert werden "/---" zu "---"
+[ ] required-version muss manuell korrigiert werden
+
+Was ich noch fixen könnte:
+- ändern der kreditkarte -> FAQ
+- ändern der kreditkarte -> Aufzählungsliste ist komisch...
+- verfügbar für...
+
+{{< notice muss aber heißen {{< warning 
+
+tabellenkopf-sperren ganz komischer output:
+
+{{< warning headline="Wichtiger Hinweis" text="Verwechseln Sie diese Funktion nicht mit dem **Schloss-Symbol in den Ansichts-Optionen**, mit dem Sie die Einstellungen einer [Tabellenansicht sperren](https://seatable.io/docs/ansichtsoptionen/ansicht-sperren/) können.
+
+!["Schloss-Symbol]("images/Bildschirmfoto-2022-10-28-um-15.22.16.png")" >}}
+
+
+[icon c=“grey”]dtable-icon-drop-down[/icon]
+
+----------
+
+#####
+
+Ergebnisse vom Jourfixe:
+
+- Suche nur im Hilfebereich
+- neue Hauptkategorien
+- URL struktur ohne article
+- best-guess umleitung
+- eigener Header
+- seitenleiste aufräumen
+- Article serie ja
+- relevante andere artikel nein
+- author raus
+- last update am Ende
+- image maps ja auf jeden fall!
+- schnellstmöglich umziehen
+- logo von den blogs

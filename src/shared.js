@@ -37,6 +37,12 @@ export function buildPostPath(post, overrideConfig) {
 		}
 	}
 
+	// custom cdb: add categorie
+	let categorie = post.frontmatter?.categories[0] ?? "";
+	if(categorie) {
+		pathSegments.push(categorie);
+	}
+
 	// add drafts folder if this is a draft post
 	if (post.isDraft) {
 		pathSegments.push('_drafts');
