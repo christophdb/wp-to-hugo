@@ -73,7 +73,7 @@ export function load() {
 			name: 'save-images',
 			type: 'choice',
 			description: 'Save images',
-			default: 'all',
+			default: 'none',
 			choices: [
 				{
 					name: 'Images attached to posts',
