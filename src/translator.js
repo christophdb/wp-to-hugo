@@ -190,6 +190,13 @@ export function getPostContent(content) {
 		}
 	  );
 
+	// [icon]
+	content = content.replace(/\[icon\](.*?)\[\/icon\]/g, (match, iconName) => `{{< seatable-icon icon="${iconName}" >}}`);
+
+	// [icon c="$COLOR"]
+	// TODO: Does not work :/
+	content = content.replaceAll('/\[icon c="grey"\](.*?)\[\/icon\]/g', (match, iconName) => `{{< seatable-icon icon="${iconName}" color="grey" >}}`);
+
 	// CUSTOM CDB for FAQ:
 	content = content.replace(
 		/<div class="togglecontainer[^"]*">/g,
