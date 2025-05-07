@@ -6,7 +6,7 @@ Converts a WordPress export XML file into Markdown files. This makes it easy to 
 
 ## CDB custom notes
 
-- simply start with node app
+- simply start with: `node app`
 
 ---
 

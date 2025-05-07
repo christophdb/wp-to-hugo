@@ -1,9 +1,28 @@
 
+Prozess:
+- Download der export.xml für die "DOCS"
+- Script zum Anlegen der export.xml für die verschiedenen Sprachen (<link>...</link> wird angepasst)
+- Docker Container zum aktualisieren der export.xml
+  - Download von title und content
+  - Speichern der export.xml mit neuem content
 
 TODOS:
-- schreiben ins richtige verzeichnis
+[x] schreiben ins richtige verzeichnis
+[x] author mit ausgeben
+[x] sprache auswählen können
+[x] docker container zum anpassen der export.xml in andere Sprachen.
 
 
+----------
+
+
+austauschen von export.xml
+url ist anders, damit crawlen, dann austauschen:
+- title
+- content encoded
+
+
+-------------
 
 Was muss noch speziell getan werden:
 

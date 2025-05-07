@@ -105,10 +105,120 @@ function initTurndownService() {
 		}
 	});
 
+	// CDB: custom turndownService
+	// ================================0
+
+
+	turndownService.addRule('bawt-key', {
+		filter: 'bawt-key',
+		replacement: function(content, node) {
+		  return `{{< keyboard "${content.trim()}" >}}`;
+		}
+	  });
+
+	  // CDB: dbox
+	  // Custom rule for .dbox to output Hugo shortcode and keep strong/a as Markdown
+		turndownService.addRule('dbox', {
+			filter: function (node) {
+			return node.nodeName === 'DIV' && node.classList.contains('dbox');
+			},
+			replacement: function (content, node) {
+			const headline = node.querySelector('.dbox-headline')?.textContent.trim() || '';
+			const textNode = node.querySelector('.dbox-content');
+			// This will convert <strong> and <a> to Markdown
+			const textMarkdown = turndownService.turndown(textNode.innerHTML);
+			return `{{< notice headline="${headline}" text="${textMarkdown}" >}}`;
+			}
+		});
+
+		// images to local...
+		turndownService.addRule('linkedImagesToLocal', {
+			filter: node => {
+			  return node.nodeName === 'A' && 
+					 node.querySelector('img') &&
+					 node.getAttribute('href')?.includes('/wp-content/uploads/');
+			},
+			replacement: (content, node) => {
+			  const img = node.querySelector('img');
+			  const alt = img.getAttribute('alt') || '';
+			  const src = img.getAttribute('src');
+			  
+			  // Extract filename and prepend 'images/'
+			  const filename = src.split('/').pop();
+			  return `![${alt}](images/${filename})`;
+			}
+		  });
+
 	return turndownService;
 }
 
 export function getPostContent(content) {
+
+	// CUSTOM CDB:
+	// =========================
+
+	// transform [notice h=headline] shortcode
+	content = content.replace(
+		/\[notice\s+([^\]]*)\]([\s\S]*?)\[\/notice\]/gi,
+		(match, attributesStr, body) => {
+		  // Parse attributes into key-value pairs
+		  const attributes = {};
+		  const attributeRegex = /(\w+)="([^"]*)"/g;
+		  let attrMatch;
+		  while ((attrMatch = attributeRegex.exec(attributesStr)) !== null) {
+			const key = attrMatch[1];
+			const value = attrMatch[2];
+			attributes[key] = value;
+		  }
+	  
+		  // Validate required 'h' attribute
+		  if (!attributes.h) {
+			console.warn('Notice shortcode missing required "h" attribute');
+			return match; // leave invalid shortcode as-is
+		  }
+	  
+		  // Clean values and escape quotes
+		  const cleanHeadline = attributes.h.replace(/"/g, '\\"');
+		  const cleanType = attributes.t?.replace(/"/g, '\\"') || '';
+		  const cleanBody = body.trim().replace(/"/g, '\\"');
+	  
+		  // Build Hugo shortcode
+		  let hugoShortcode = '{{< notice ';
+		  if (cleanType) hugoShortcode += `type="${cleanType}" `;
+		  hugoShortcode += `headline="${cleanHeadline}" text="${cleanBody}" >}}`;
+		  return hugoShortcode;
+		}
+	  );
+
+	// CUSTOM CDB for FAQ:
+	content = content.replace(
+		/<div class="togglecontainer[^"]*">/g,
+		'{{< faq >}}'
+	  );
+	  content = content.replace(
+		/<span class="toggle_icon"><span class="vert_icon"><\/span><span class="hor_icon"><\/span><\/span><\/p>/g,
+		'|||'
+	  );
+	  content = content.replace(
+		/<\/div><\/div><\/div><\/section>\n<\/div>/g,
+		'{{< /faq >}}'
+	  );
+	  content = content.replace(
+		/<\/div><\/div><\/div><\/section>/g,
+		'---'
+	  );
+
+	// available with (erfordert nacharbeit)
+	  content = content.replace(
+		/<div class="metaInfo">\s*<h3 class="betterdocs-content-heading" id="1-toc-title">Verfügbar mit <\/h3>\s*<ul>/g,
+		'{{< required-version '
+	  );
+
+
+
+
+
+
 	// insert an empty div element between double line breaks
 	// this nifty trick causes turndown to keep adjacent paragraphs separated
 	// without mucking up content inside of other elements (like <code> blocks)
