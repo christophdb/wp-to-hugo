@@ -12,6 +12,32 @@ export function load() {
 			prompt: inquirer.input
 		},
 		{
+			name: 'language',
+			type: 'choice',
+			description: "Choose language of the input",
+			default: 'none',
+			choices: [
+				{
+					name: 'Deutsch',
+					value: 'de'
+				},
+				{
+					name: 'English',
+					value: 'en'
+				},
+				{
+					name: 'French',
+					value: 'fr'
+				},
+				{
+					name: 'no language',
+					value: ''
+				}
+			],
+			isPathQuestion: true,
+			prompt: inquirer.select
+		},
+		{
 			name: 'post-folders',
 			type: 'boolean',
 			description: 'Put each post into its own folder',

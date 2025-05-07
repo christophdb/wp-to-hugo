@@ -68,8 +68,13 @@ export function buildPostPath(post, overrideConfig) {
 	}
 
 	// use slug as folder or filename as specified
+	// Custom: add language...
 	if (pathConfig.postFolders) {
-		pathSegments.push(slug, 'index.md');
+		if(pathConfig.language){
+			pathSegments.push(slug, 'index.' + pathConfig.language + '.md');
+		} else {
+			pathSegments.push(slug, 'index.md');
+		}
 	} else {
 		pathSegments.push(slug + '.md');
 	}
