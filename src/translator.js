@@ -149,6 +149,28 @@ function initTurndownService() {
 			}
 		  });
 
+	turndownService.addRule('ol-with-img-as-first-child', {
+		filter: (node) => node.nodeName === 'OL' && node.firstChild.tagName === 'IMG',
+		replacement: function (content, node) {
+			const image = node.firstChild;
+
+			node.removeChild(node.firstChild);
+
+			return turndownService.turndown(image.outerHTML) + '\n\n' + turndownService.turndown(node.outerHTML);
+		}
+	});
+
+	turndownService.addRule('ol-with-img-as-first-child-within-anchor', {
+		filter: (node) => node.nodeName === 'OL' && node.firstChild.tagName === 'A' && node.firstChild.firstChild.tagName === 'IMG',
+		replacement: function (content, node) {
+			const image = node.firstChild.firstChild;
+
+			node.removeChild(node.firstChild);
+
+			return turndownService.turndown(image.outerHTML) + '\n\n' + turndownService.turndown(node.outerHTML);
+		}
+	});
+
 	return turndownService;
 }
 
