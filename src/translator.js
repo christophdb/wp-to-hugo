@@ -186,6 +186,26 @@ function initTurndownService() {
 		}
 	  });
 
+	turndownService.addRule('metaInfo-to-shortcode', {
+		filter: function (node) {
+		  // Match <div class="metaInfo">
+		  return (
+			node.nodeName === 'DIV' &&
+			node.classList &&
+			node.classList.contains('metaInfo')
+		  );
+		},
+		replacement: function (content, node) {
+		  // Find all <li> elements inside the <ul>
+		  const ul = node.querySelector('ul');
+		  if (!ul) return '';
+		  const items = Array.from(ul.querySelectorAll('li')).map(li => 
+			`"${li.textContent.trim()}"`
+		  );
+		  return `{{< required-version ${items.join(' ')} >}}`;
+		}
+	  });
+
 	return turndownService;
 }
 
