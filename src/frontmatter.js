@@ -26,6 +26,10 @@ export function lastmod(post) {
 	return post.lastmod;
 }
 
+export function url(post) {
+	return post.url;
+}
+
 export function draft(post) {
 	// boolean representing the previously parsed draft status, only included when true
 	return post.isDraft ? true : undefined;

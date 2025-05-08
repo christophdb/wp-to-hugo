@@ -85,6 +85,23 @@ function collectPosts(allPostData, postTypes) {
 }
 
 function buildPost(data) {
+	let help_path = "/help/";
+	if (shared.config.language == "de"){
+		help_path = "/de/hilfe/";
+	}
+	else if (shared.config.language == "fr"){
+		help_path = "/fr/aide/";
+	}
+	else if (shared.config.language == "es"){
+		help_path = "/es/ayuda/";
+	}
+	else if (shared.config.language == "pt"){
+		help_path = "/pt/ajuda/";
+	}
+	else if (shared.config.language == "ru"){
+		help_path = "/ru/help/";
+	}
+
 	return {
 		// full raw post data
 		data,
@@ -97,6 +114,7 @@ function buildPost(data) {
 		id: data.childValue('post_id'),
 		isDraft: data.childValue('status') === 'draft',
 		slug: decodeURIComponent(data.childValue('post_name')),
+		url: help_path + decodeURIComponent(data.childValue('post_name')),
 		date: getPostDate(data),
 		lastmod: getPostModifiedDate(data.childValue('post_modified')),
 		coverImageId: getPostMetaValue(data, '_thumbnail_id'),

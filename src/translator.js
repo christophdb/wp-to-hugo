@@ -127,7 +127,7 @@ function initTurndownService() {
 			const textNode = node.querySelector('.dbox-content');
 			// This will convert <strong> and <a> to Markdown
 			const textMarkdown = turndownService.turndown(textNode.innerHTML);
-			return `{{< notice headline="${headline}" text="${textMarkdown}" >}}`;
+			return `{{< warning headline="${headline}" text="${textMarkdown}" >}}`;
 			}
 		});
 
@@ -171,6 +171,21 @@ function initTurndownService() {
 		}
 	});
 
+	turndownService.addRule('ol-with-images', {
+		filter: (node) => {
+		  // Target IMG tags that are direct children of OL
+		  // or nested inside LI within OL
+		  return node.nodeName === 'IMG' && (
+			node.parentNode.nodeName === 'OL' ||
+			(node.parentNode.nodeName === 'LI' && node.parentNode.parentNode.nodeName === 'OL')
+		  );
+		},
+		replacement: function (content, node) {
+		  // Add two newlines before the image and one after
+		  return '\n\n' + turndownService.turndown(node.outerHTML) + '\n';
+		}
+	  });
+
 	return turndownService;
 }
 
@@ -205,7 +220,7 @@ export function getPostContent(content) {
 		  const cleanBody = body.trim().replace(/"/g, '\\"');
 	  
 		  // Build Hugo shortcode
-		  let hugoShortcode = '{{< notice ';
+		  let hugoShortcode = '{{< warning ';
 		  if (cleanType) hugoShortcode += `type="${cleanType}" `;
 		  hugoShortcode += `headline="${cleanHeadline}" text="${cleanBody}" >}}`;
 		  return hugoShortcode;
@@ -248,6 +263,11 @@ export function getPostContent(content) {
 		/<\/div><\/div><\/div><\/section>/g,
 		'---'
 	  );
+	  content = content.replace(
+		/\[toggle q="([^"]+)"\]([\s\S]*?)\[\/toggle\]/g,
+		(_, q, content) => `${q}\n\n|||\n\n${content}\n\n---\n\n`
+	  );
+	  
 
 	// available with (erfordert nacharbeit)
 	  content = content.replace(

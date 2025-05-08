@@ -54,3 +54,7 @@ node app
 Follow the questions of the wizard - default values should be ok.
 Only the images must be downloaded once.
 
+## What is not migrated
+
+- tables (from tablepress) must be migrated manually
+- faq (deutsche seiten)
