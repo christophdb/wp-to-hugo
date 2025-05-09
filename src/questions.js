@@ -30,6 +30,18 @@ export function load() {
 					value: 'fr'
 				},
 				{
+					name: 'Spanish',
+					value: 'es'
+				},
+				{
+					name: 'Portuguiese',
+					value: 'pt'
+				},
+				{
+					name: 'Russian',
+					value: 'ru'
+				},
+				{
 					name: 'no language',
 					value: ''
 				}

@@ -61,8 +61,8 @@ def update_xml_content(xml_file, output_file):
             content_encoded = item.find(f'{{{content_ns}}}encoded')
             if content_encoded is not None:
                 backup_elem = ET.Element(QName(content_ns, 'encoded-backup'))
-                backup_elem.text = content_encoded.text
-                item.append(backup_elem)
+                #backup_elem.text = content_encoded.text
+                #item.append(backup_elem)
             else:
                 logger.info(f"Item {idx}: No <content:encoded> to backup.")
 
