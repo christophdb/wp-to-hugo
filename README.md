@@ -42,6 +42,7 @@ Important notes:
 - expects `./export.xml` as input.
 - generates `./updated-updated.xml`
 - execution takes about 10 minutes per xml file (2443 items)
+- also transform german content
 
 ## Markdown generation
 

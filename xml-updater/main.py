@@ -20,11 +20,19 @@ def get_web_content(url):
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         title = soup.title.string.strip() if soup.title else None
-        content_div = soup.find('div', {
-            'id': 'betterdocs-single-content',
-            'class': 'betterdocs-content'
+        content_div = soup.find('main', {
+            #'id': 'main', # hier entsprechend austauschen (betterdocs-single-content vs main)
+            #'class': 'all_colors' # betterdocs-content vs all_colors
         })
-        content = str(content_div) if content_div else None
+
+        if content_div:
+            # Find and remove all <div class="author_box">
+            for author_box in content_div.find_all('div', class_='author_box'):
+                author_box.decompose()
+            content = str(content_div)
+        else:
+            content = None
+            
         return title, content
     except Exception as e:
         logger.warning(f"Error fetching {url}: {str(e)}")
@@ -48,8 +56,18 @@ def update_xml_content(xml_file, output_file):
 
     for idx, item in enumerate(items, start=1):
         link_elem = item.find('link')
+        guid_elem = item.find('guid')
         if link_elem is None or not link_elem.text:
             logger.info(f"Item {idx}: No <link> found, skipping.")
+            continue
+
+        # Check if guid_elem exists and has text
+        if guid_elem is not None and guid_elem.text:
+            if "wp-content/uploads" in guid_elem.text:
+                logger.info(f"Item {idx}: No page, skipping.")
+                continue
+        else:
+            logger.info(f"Item {idx}: No <guid> found, skipping.")
             continue
 
         # Get new content from web
